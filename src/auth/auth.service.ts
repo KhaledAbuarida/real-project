@@ -3,9 +3,9 @@ import { AuthPayloadDto } from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
 
 const fakeUsers: AuthPayloadDto[] = [
-    { username: 'admin', password: 'admin' },
-    { username: 'user', password: 'user' },
-    { username: 'test', password: 'test' },
+    { id:1, username: 'admin', password: 'admin' },
+    { id:2, username: 'user', password: 'user' },
+    { id:3, username: 'test', password: 'test' },
 ];
 
 @Injectable()
@@ -13,7 +13,7 @@ export class AuthService {
 
     constructor(private readonly jwtService: JwtService){}
 
-    validateUser({ username, password }: AuthPayloadDto) {
+    validateUser({ id, username, password }: AuthPayloadDto) {
         // find user in fake users
         const findUser = fakeUsers.find(user => user.username === username);
 
@@ -27,7 +27,7 @@ export class AuthService {
         }
         
         // if password is correct, return the token
-        const token = this.jwtService.sign({username});   
+        const token = this.jwtService.sign({username, id: findUser.id});   
         return token;
     }
 }
